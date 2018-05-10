@@ -171,4 +171,7 @@ venv.bak/
 .floo
 .flooignore
 
+# User specific settings
+resources/settings.py
+
 # End of https://www.gitignore.io/api/python,pycharm
