@@ -15,11 +15,12 @@ def insert_movie(movie_id, movie_title, movie_description, movie_year, movie_lan
     """
     if movie_year is None:
         movie_year = 0
+
     cursor.execute("INSERT INTO MOVIE VALUES (?, ?, ?, ?, ?)", [movie_id, movie_title, movie_description, movie_year, movie_language])
     insert_genres_for_movie(movie_id, movie_genres)
-
     insert_movie_media(movie_id, movie_media)
     insert_movie_subtitles(movie_id, movie_subtitles)
+
     cursor.commit()
 
 
