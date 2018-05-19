@@ -2,6 +2,17 @@ from flixify.dataaccess.db_connection import cursor
 
 
 def insert_movie(movie_id, movie_title, movie_description, movie_year, movie_language, movie_genres, movie_media, movie_subtitles):
+    """
+
+    :type movie_id: int
+    :type movie_title: str
+    :type movie_description: str
+    :type movie_year: int
+    :type movie_language: str
+    :type movie_genres: list
+    :type movie_media: list
+    :type movie_subtitles: list
+    """
     if movie_year is None:
         movie_year = 0
     insert_movie_statement = "INSERT INTO MOVIE VALUES ('{0}', '{1}', '{2}', {3}, '{4}')".format(movie_id, movie_title.replace("'", "''"), movie_description.replace("'", "''"), movie_year, movie_language)
@@ -14,6 +25,11 @@ def insert_movie(movie_id, movie_title, movie_description, movie_year, movie_lan
 
 
 def insert_movie_subtitles(movie_id, movie_subtitles):
+    """
+
+    :type movie_id: int
+    :type movie_subtitles: list
+    """
     for movie_subtitle_language in movie_subtitles:
         for movie_subtitle_properties in movie_subtitles[movie_subtitle_language]:
             id = movie_subtitle_properties['id']
@@ -29,6 +45,11 @@ def insert_movie_subtitles(movie_id, movie_subtitles):
 
 
 def insert_movie_media(movie_id, movie_media):
+    """
+
+    :type movie_id: int
+    :type movie_media: list
+    """
     for media in movie_media:
         resolution = media
         url = movie_media[media]
@@ -39,6 +60,11 @@ def insert_movie_media(movie_id, movie_media):
 
 
 def insert_genres_for_movie(movie_id, movie_genres):
+    """
+
+    :type movie_id: int
+    :type movie_genres: list
+    """
     for movie_genre in movie_genres:
         insert_movie_genre_statement = "INSERT INTO GENRE_FOR_MOVIE VALUES ('{0}', '{1}')".format(movie_id, movie_genre)
         print(insert_movie_genre_statement)
@@ -46,17 +72,18 @@ def insert_genres_for_movie(movie_id, movie_genres):
 
 
 def search_movie_by_title(title):
-    stmt = "SELECT TOP(10) Title FROM movie WHERE Title LIKE '%{0}%'".format(title)
+    """
+
+    :type title: str
+    """
+    stmt = "SELECT TOP(10) Title FROM movie WHERE Title LIKE '%{0}%'".format(title.replace("'", "''"))
     return cursor.execute(stmt)
+
 
 def movie_info(title):
-    stmt = "SELECT * FROM movie WHERE Title = '{0}'".format(title)
+    """
+
+    :type title: str
+    """
+    stmt = "SELECT * FROM movie WHERE Title = '{0}'".format(title.replace("'", "''"))
     return cursor.execute(stmt)
-
-
-# import json
-# a = json.dumps({"Name": "Robert",
-#    "Date" : "January 17th, 2017",
-#    "Address" : "Jakarta"})
-# for key in json.loads(a):
-#     print(key)
