@@ -57,7 +57,7 @@ def insert_genres_for_movie(movie_id, movie_genres):
     :type movie_genres: list
     """
     for movie_genre in movie_genres:
-        cursor.execute("INSERT INTO GENRE_FOR_MOVIE VALUES ('{0}', '{1}')", [movie_id, movie_genre])
+        cursor.execute("INSERT INTO GENRE_FOR_MOVIE VALUES (?, ?)", [movie_id, movie_genre])
 
 
 def search_movie_by_title(title):
