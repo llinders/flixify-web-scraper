@@ -15,8 +15,7 @@ def insert_movie(movie_id, movie_title, movie_description, movie_year, movie_lan
     """
     if movie_year is None:
         movie_year = 0
-    insert_movie_statement = "INSERT INTO MOVIE VALUES ('{0}', '{1}', '{2}', {3}, '{4}')".format(movie_id, movie_title.replace("'", "''"), movie_description.replace("'", "''"), movie_year, movie_language)
-    cursor.execute(insert_movie_statement)
+    cursor.execute("INSERT INTO MOVIE VALUES (?, ?, ?, ?, ?)", [movie_id, movie_title, movie_description, movie_year, movie_language])
     insert_genres_for_movie(movie_id, movie_genres)
 
     insert_movie_media(movie_id, movie_media)
@@ -36,12 +35,7 @@ def insert_movie_subtitles(movie_id, movie_subtitles):
             filename = movie_subtitle_properties['filename']
             src = movie_subtitle_properties['src']
             url = movie_subtitle_properties['url']
-            insert_movie_subtitle_statement = "INSERT INTO MOVIE_SUBTITLE VALUES ('{0}', '{1}', '{2}', '{3}')".format(
-                id,
-                movie_id,
-                url,
-                movie_subtitle_language)
-            cursor.execute(insert_movie_subtitle_statement)
+            cursor.execute("INSERT INTO MOVIE_SUBTITLE VALUES (?, ?, ?, ?)", [id, movie_id, url, movie_subtitle_language])
 
 
 def insert_movie_media(movie_id, movie_media):
@@ -53,10 +47,7 @@ def insert_movie_media(movie_id, movie_media):
     for media in movie_media:
         resolution = media
         url = movie_media[media]
-        insert_movie_media_statement = "INSERT INTO MOVIE_MEDIA VALUES ('{0}', {1}, '{2}')".format(movie_id, resolution,
-                                                                                                   url)
-        print(insert_movie_media_statement)
-        cursor.execute(insert_movie_media_statement)
+        cursor.execute("INSERT INTO MOVIE_MEDIA VALUES (?, ?, ?)", [movie_id, resolution, url])
 
 
 def insert_genres_for_movie(movie_id, movie_genres):
@@ -66,9 +57,7 @@ def insert_genres_for_movie(movie_id, movie_genres):
     :type movie_genres: list
     """
     for movie_genre in movie_genres:
-        insert_movie_genre_statement = "INSERT INTO GENRE_FOR_MOVIE VALUES ('{0}', '{1}')".format(movie_id, movie_genre)
-        print(insert_movie_genre_statement)
-        cursor.execute(insert_movie_genre_statement)
+        cursor.execute("INSERT INTO GENRE_FOR_MOVIE VALUES ('{0}', '{1}')", [movie_id, movie_genre])
 
 
 def search_movie_by_title(title):
@@ -76,8 +65,7 @@ def search_movie_by_title(title):
 
     :type title: str
     """
-    stmt = "SELECT TOP(10) Title FROM movie WHERE Title LIKE '%{0}%'".format(title.replace("'", "''"))
-    return cursor.execute(stmt)
+    return cursor.execute("SELECT TOP(10) Title FROM movie WHERE Title LIKE ?", ["%{0}%".format(title)])
 
 
 def movie_info(title):
@@ -85,5 +73,4 @@ def movie_info(title):
 
     :type title: str
     """
-    stmt = "SELECT * FROM movie WHERE Title = '{0}'".format(title.replace("'", "''"))
-    return cursor.execute(stmt)
+    return cursor.execute("SELECT * FROM movie WHERE Title = ?", [title])
