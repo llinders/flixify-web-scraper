@@ -44,6 +44,16 @@ def insert_genres_for_movie(movie_id, movie_genres):
         print(insert_movie_genre_statement)
         cursor.execute(insert_movie_genre_statement)
 
+
+def search_movie_by_title(title):
+    stmt = "SELECT TOP(10) Title FROM movie WHERE Title LIKE '%{0}%'".format(title)
+    return cursor.execute(stmt)
+
+def movie_info(title):
+    stmt = "SELECT * FROM movie WHERE Title = '{0}'".format(title)
+    return cursor.execute(stmt)
+
+
 # import json
 # a = json.dumps({"Name": "Robert",
 #    "Date" : "January 17th, 2017",
